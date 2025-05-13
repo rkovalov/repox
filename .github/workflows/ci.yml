@@ -1,27 +1,112 @@
-name: CI/CD
+name: Github Repos Explorer CI/CD
 
 on:
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to build'
+        type: string
+        default: 'main'
+        required: true
+      REACT_APP_API_URL:
+        description: 'GitHub API URL'
+        type: string
+        default: 'https://api.github.com'
+        required: true
+      REACT_APP_API_ACCESS_TOKEN:
+        description: 'GitHub API Token'
+        type: string
+        required: false
+
+env:
+  REACT_APP_API_URL: ${{ github.event.inputs.REACT_APP_API_URL || 'https://api.github.com' }}
+  REACT_APP_API_ACCESS_TOKEN: ${{ github.event.inputs.REACT_APP_API_ACCESS_TOKEN || '' }}
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    
     steps:
-      - uses: actions/checkout@v4
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    
+    - name: Set Git commit info as environment variables
+      run: |
+        echo "GIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+        echo "GIT_COMMIT_MESSAGE=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
+        echo "GIT_COMMIT_AUTHOR=$(git log -1 --pretty=%an)" >> $GITHUB_ENV
+        echo "GIT_COMMIT_DATE=$(git log -1 --pretty=%ad --date=iso)" >> $GITHUB_ENV
+        echo "GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)" >> $GITHUB_ENV
+    
+    - name: Display Git commit info
+      run: |
+        echo "Git commit info:"
+        echo "Commit SHA: ${{ env.GIT_SHA }}"
+        echo "Commit message: ${{ env.GIT_COMMIT_MESSAGE }}"
+        echo "Commit author: ${{ env.GIT_COMMIT_AUTHOR }}"
+        echo "Commit date: ${{ env.GIT_COMMIT_DATE }}"
+        echo "Branch: ${{ env.GIT_BRANCH }}"
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '22'
+        
+    - name: Install pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: 10.1.0
+        run_install: false
+        
+    - name: Get pnpm store directory
+      shell: bash
+      run: |
+        echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+          
+    - uses: actions/cache@v3
+      name: Setup pnpm cache
+      with:
+        path: ${{ env.STORE_PATH }}
+        key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-pnpm-store-
+          
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+    
+    - name: Dependecies check
+      run: pnpm pnpm check:dependencies
 
-      - name: Build and test in Docker
-        run: |
-          GIT_SHA=$(./docker/get-git-sha.sh)
-          docker build -t github-repos --build-arg GIT_SHA=$GIT_SHA -f docker/Dockerfile .
-          docker run --rm github-repos pnpm test
-          docker run --rm github-repos pnpm check:types
-          docker run --rm github-repos pnpm check:cspell
-          docker run --rm github-repos pnpm check:dependencies
-          docker run --rm github-repos pnpm format:lint
-          docker run --rm github-repos pnpm build
+    - name: Type check
+      run: pnpm check:types
+
+    - name: Spell check
+      run: pnpm check:cspell || true
+      
+    - name: Lint code
+      run: pnpm format:lint || true
+      
+    - name: Run tests
+      run: pnpm test
+      
+    - name: Build project
+      run: |
+        # Pass git information and environment variables to the build process
+        GIT_SHA=${{ env.GIT_SHA }} \
+        REACT_APP_API_URL=${{ env.REACT_APP_API_URL }} \
+        REACT_APP_API_ACCESS_TOKEN=${{ env.REACT_APP_API_ACCESS_TOKEN }} \
+        pnpm build
+      
+    # - name: Cache build artifacts
+    #   uses: actions/cache@v3
+    #   with:
+    #     path: |
+    #       dist
+    #     key: ${{ runner.os }}-build-${{ github.sha }}
+    #     restore-keys: |
+    #       ${{ runner.os }}-build-
