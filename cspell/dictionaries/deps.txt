@@ -4,3 +4,4 @@ biomejs
 browserslistrc
 vitest
 rsbuild
+valibot
