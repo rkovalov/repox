@@ -1,33 +1,92 @@
-# Rsbuild project
+# GitHub Repos Explorer
 
-## Recommendation
+A modern React application for exploring GitHub repositories, built with TypeScript and a robust tech stack.
 
-Install [fnm](https://github.com/Schniz/fnm) to automatically select the correct Node.js version based on the `.nvmrc` file.
+## 🚀 Tech Stack
 
-## Setup
+- **Framework**: React 19
+- **Build Tool**: Rsbuild
+- **Styling**: Panda CSS
+- **Routing**: TanStack Router
+- **State Management**: TanStack Query
+- **Form Validation**: Valibot
+- **UI Components**: React Aria Components
+- **Icons**: Lucide React
+- **Testing**: Vitest + Testing Library
+- **Linting/Formatting**: Biome
+- **Spelling**: cspell
+- **Package Manager**: pnpm
 
-Install the dependencies:
+## 📋 Prerequisites
 
-```bash
-pnpm install
+- Node.js >= 22
+- pnpm >= 10
+- [fnm](https://github.com/Schniz/fnm) (recommended for Node.js version management)
+
+## 🛠️ Development Setup
+
+1. **Install Dependencies**
+   ```bash
+   pnpm install
+   ```
+
+2. **Environment Setup**
+   - Copy `.env.example` to `.env`
+   - Fill in the required environment variables
+
+3. **Start Development Server**
+   ```bash
+   pnpm dev
+   ```
+
+## 📦 Available Scripts
+
+- `pnpm dev` - Start development server
+- `pnpm build` - Build for production
+- `pnpm preview` - Preview production build
+- `pnpm test` - Run tests
+- `pnpm test:watch` - Run tests in watch mode
+- `pnpm test:coverage` - Run tests with coverage
+- `pnpm lint` - Run linter
+- `pnpm format` - Format code
+- `pnpm check:types` - Check TypeScript types
+- `pnpm check:cspell` - Check Spelling
+
+## 🏗️ Project Structure
+
+```
+src/
+├── components/     # Reusable UI components
+├── modules/        # Feature modules
+├── router/         # Route definitions
+├── utils/          # Utility functions
+├── env/           # Environment configuration
+├── _public/       # Static assets
+├── app.tsx        # Root application component
+└── index.tsx      # Application entry point
 ```
 
-## Get started
+## 🎨 Styling
 
-Start the dev server:
+The project uses Panda CSS for styling with a custom configuration in `panda.config.ts`. The styling system is generated in the `styled-system` directory.
 
-```bash
-pnpm dev
-```
+## 🧪 Testing
 
-Build the app for production:
+Tests are written using Vitest and Testing Library. Test files are located in the `tests` directory.
 
-```bash
-pnpm build
-```
+## 📝 Code Quality
 
-Preview the production build locally:
+- **Linting**: Biome for code linting and formatting
+- **Type Checking**: TypeScript for static type checking
+- **Git Hooks**: 
+  - Pre-commit: Runs linting and formatting
+  - Commit-msg: Enforces conventional commit messages
 
-```bash
-pnpm preview
-```
+## 🔄 CI/CD
+
+The project includes several quality checks:
+- Type checking
+- Linting
+- Formatting
+- Spell checking
+- Dependency checking
