@@ -1,5 +1,5 @@
+import { Layout } from '@/components';
 import { ErrorComponent, Page404 } from '@/modules/errors';
-
 import {
   Outlet,
   createRootRouteWithContext,
@@ -38,7 +38,9 @@ export const rootRoute = createRootRouteWithContext<{
   component: () => {
     return (
       <>
-        <Outlet />
+        <Layout>
+          <Outlet />
+        </Layout>
         <Suspense>
           <TanStackRouterDevtools />
           <ReactQueryDevtoolsDevtools />

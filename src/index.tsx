@@ -3,6 +3,7 @@ import { ENV_VARS } from '@/env';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './app';
+import './index.css';
 
 console.info(`version ${ENV_VARS.VERSION}`);
 

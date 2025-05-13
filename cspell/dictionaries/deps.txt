@@ -6,3 +6,5 @@ vitest
 rsbuild
 valibot
 revparse
+codegen
+pandacss
