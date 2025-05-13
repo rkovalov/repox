@@ -5,3 +5,4 @@ browserslistrc
 vitest
 rsbuild
 valibot
+revparse

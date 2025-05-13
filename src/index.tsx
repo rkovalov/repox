@@ -1,6 +1,10 @@
+import { ENV_VARS } from '@/env';
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './app';
+
+console.info(`version ${ENV_VARS.VERSION}`);
 
 const rootEl = document.getElementById('root');
 if (rootEl) {
