@@ -1,6 +1,11 @@
 import { css } from '@/../styled-system/css';
 import { flex } from '@/../styled-system/patterns';
-import { Input } from '@/components';
+import {
+  LoaderCircle,
+  SquareArrowOutUpRight,
+  Star,
+  Utensils,
+} from 'lucide-react';
 import {
   Cell,
   Column,
@@ -9,27 +14,14 @@ import {
   TableBody,
   TableHeader,
 } from 'react-aria-components';
-
-interface Repository {
-  name: string;
-  stars: number;
-  forks: number;
-}
-
-// Mock data - replace with actual API call
-const repositories: Repository[] = [
-  { name: 'react', stars: 200000, forks: 40000 },
-  { name: 'vue', stars: 180000, forks: 28000 },
-  { name: 'angular', stars: 90000, forks: 24000 },
-];
+import { useRepos } from '../../hooks';
+import { Filters } from '../filters';
 
 export const Repos = () => {
+  const { data, isLoading, isError } = useRepos();
   return (
     <div className={flex({ direction: 'column', gap: 4 })}>
-      <div className={css({ width: '30%' })}>
-        <Input placeholder="Search..." />
-      </div>
-
+      <Filters />
       <Table
         aria-label="GitHub repositories"
         className={css({
@@ -59,23 +51,61 @@ export const Repos = () => {
           <Column>Forks</Column>
         </TableHeader>
         <TableBody>
-          {repositories.map((repo) => (
-            <Row
-              key={repo.name}
-              className={css({
-                p: '3',
-                borderBottom: '1px solid',
-                borderColor: 'gray.200',
-                '&:hover': {
-                  bg: 'slate.700',
-                },
-              })}
-            >
-              <Cell>{repo.name}</Cell>
-              <Cell>🌟 {repo.stars.toLocaleString()}</Cell>
-              <Cell>🍴 {repo.forks.toLocaleString()}</Cell>
+          {isLoading ? (
+            <Row>
+              <Cell colSpan={3}>
+                <LoaderCircle className={css({ animation: 'spin' })} />
+              </Cell>
             </Row>
-          ))}
+          ) : isError ? (
+            <Row>
+              <Cell colSpan={3}>
+                Sorry, we couldn't load the repositories. Please try again
+                later.
+              </Cell>
+            </Row>
+          ) : !data?.search.nodes.length ? (
+            <Row>
+              <Cell colSpan={3}>
+                No repositories found. Please adjust your filters and try again.
+              </Cell>
+            </Row>
+          ) : (
+            data?.search.nodes.map((repo) => (
+              <Row
+                key={repo.url}
+                className={css({
+                  p: '3',
+                  borderBottom: '1px solid',
+                  borderColor: 'gray.200',
+                  '&:hover': {
+                    bg: 'slate.700',
+                  },
+                })}
+              >
+                <Cell>
+                  <a
+                    href={repo.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={flex({ gap: 2, alignItems: 'center' })}
+                  >
+                    <SquareArrowOutUpRight size={12} /> {repo.name}
+                  </a>
+                </Cell>
+                <Cell>
+                  <div className={flex({ gap: 2, alignItems: 'center' })}>
+                    <Star size={12} /> {repo.stargazerCount.toLocaleString()}
+                  </div>
+                </Cell>
+                <Cell>
+                  <div className={flex({ gap: 2, alignItems: 'center' })}>
+                    <Utensils size={12} /> {repo.forkCount.toLocaleString()}
+                  </div>
+                </Cell>
+              </Row>
+            ))
+          )}
         </TableBody>
       </Table>
     </div>

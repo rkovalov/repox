@@ -3,6 +3,7 @@ import * as v from 'valibot';
 
 const defaultEnvVarsSchema = v.object({
   REACT_APP_API_URL: v.string(),
+  REACT_APP_API_ACCESS_TOKEN: v.string(),
   VERSION: v.string(),
 });
 

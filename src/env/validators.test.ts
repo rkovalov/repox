@@ -2,6 +2,7 @@ import { type EnvVars, validate } from './validators';
 
 describe('validate', () => {
   const validEnvVars: EnvVars = {
+    REACT_APP_API_ACCESS_TOKEN: '1234567890',
     REACT_APP_API_URL: '/api',
     VERSION: 'v1.1.1',
   };

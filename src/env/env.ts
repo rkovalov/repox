@@ -16,6 +16,7 @@ Object.preventExtensions(window.__env__);
 const _ENV_VARS: EnvVars = {
   REACT_APP_API_URL: import.meta.env.REACT_APP_API_URL,
   VERSION: import.meta.env.VERSION,
+  REACT_APP_API_ACCESS_TOKEN: import.meta.env.REACT_APP_API_ACCESS_TOKEN,
   // we can inject any env variable during deployment time
   ...window.__env__,
 } as const;

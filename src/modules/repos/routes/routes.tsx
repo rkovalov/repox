@@ -1,6 +1,7 @@
+import { queryClient } from '@/router';
 import { type AnyRoute, Outlet, createRoute } from '@tanstack/react-router';
-import { Repos } from '../components/repos';
-import { reposParamsSchema } from './validators';
+import * as DP from '../data-provider';
+import { reposSearchParamsSchema } from './validators';
 
 export const createRoutes = <Route extends AnyRoute>(rootRoute: Route) => {
   const indexRoute = createRoute({
@@ -17,9 +18,15 @@ export const createRoutes = <Route extends AnyRoute>(rootRoute: Route) => {
   const reposRoute = createRoute({
     path: '/',
     getParentRoute: () => indexRoute,
-    validateSearch: reposParamsSchema,
-    component: Repos,
-  });
+    validateSearch: reposSearchParamsSchema,
+    beforeLoad: ({ search }) => {
+      return { search };
+    },
+    loader: ({ context }) => {
+      queryClient.ensureQueryData(DP.reposQueryOptions(context.search));
+    },
+    // component: Repos,
+  }).lazy(() => import('./repos.lazy').then((d) => d.Route));
 
   return indexRoute.addChildren([reposRoute]);
 };
