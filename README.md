@@ -1,3 +1,5 @@
+[![CI/CD](https://github.com/rkovalov/repos/actions/workflows/ci.yml/badge.svg)](https://github.com/rkovalov/repos/actions/workflows/ci.yml)
+
 # GitHub Repos Explorer
 
 A modern React application for exploring GitHub repositories, built with TypeScript and a robust tech stack.
@@ -70,17 +72,15 @@ docker/
 ### Building and Running with Docker
 
 1. **Build the Docker image**
-  # Get the Git SHA
-  ```bash
-  GIT_SHA=$(./docker/get-git-sha.sh)
-  ```
-  
-  # Build the image with Git SHA
-  ```bash
-  docker build -t github-repos \
-    --build-arg GIT_SHA=$GIT_SHA \
-    -f docker/Dockerfile .
-  ```
+   ```bash
+   # Get the Git SHA
+   GIT_SHA=$(./docker/get-git-sha.sh)
+   
+   # Build the image with Git SHA
+   docker build -t github-repos \
+     --build-arg GIT_SHA=$GIT_SHA \
+     -f docker/Dockerfile .
+   ```
 
 2. **Run the container with environment variables**
    ```bash

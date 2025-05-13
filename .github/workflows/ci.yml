@@ -22,5 +22,6 @@ jobs:
           docker run --rm github-repos pnpm test
           docker run --rm github-repos pnpm check:types
           docker run --rm github-repos pnpm check:cspell
+          docker run --rm github-repos pnpm check:dependencies
           docker run --rm github-repos pnpm format:lint
           docker run --rm github-repos pnpm build
