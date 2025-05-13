@@ -1,5 +1,9 @@
 # Rsbuild project
 
+## Recommendation
+
+Install [fnm](https://github.com/Schniz/fnm) to automatically select the correct Node.js version based on the `.nvmrc` file.
+
 ## Setup
 
 Install the dependencies:
