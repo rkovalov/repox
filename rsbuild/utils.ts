@@ -7,7 +7,9 @@ import { formatPublicVars } from '../src/utils/object/format';
 const { publicVars } = loadEnv({ prefixes: ['REACT_APP_'] });
 
 export const loadPublicEnvVars = async () => {
-  const gitSHA = await getGitSha();
+  // The process.env.GIT_SHA environment variable might be set during the Docker image build process.
+  // This is useful to avoid copying the entire .git folder into the Docker image, reducing its size.
+  const gitSHA = process.env.GIT_SHA ?? (await getGitSha());
   const VERSION = `v${packageJson.version}-${gitSHA}`;
   return {
     ...formatPublicVars(publicVars),

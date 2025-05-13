@@ -4,8 +4,6 @@ import { loadPublicEnvVars } from './rsbuild/utils';
 
 import { pluginReact } from '@rsbuild/plugin-react';
 
-import postcssPreset from '@pandacss/dev/postcss';
-
 export default defineConfig(
   async ({ env, command, envMode }): Promise<RsbuildConfig> => {
     console.log('[Config]', { env, command, envMode });
@@ -30,6 +28,15 @@ export default defineConfig(
         title: 'Repository Management System',
         meta: {
           version: `${JSON.parse(envVars['import.meta.env.VERSION'])}`,
+        },
+        tags: {
+          tag: 'script',
+          head: true,
+          append: false,
+          publicPath: true,
+          attrs: {
+            src: 'env.js',
+          },
         },
       },
 

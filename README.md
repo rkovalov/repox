@@ -16,12 +16,14 @@ A modern React application for exploring GitHub repositories, built with TypeScr
 - **Linting/Formatting**: Biome
 - **Spelling**: cspell
 - **Package Manager**: pnpm
+- **Container**: Docker + Nginx
 
 ## 📋 Prerequisites
 
 - Node.js >= 22
 - pnpm >= 10
 - [fnm](https://github.com/Schniz/fnm) (recommended for Node.js version management)
+- Docker (optional, for containerized development)
 
 ## 🛠️ Development Setup
 
@@ -51,6 +53,65 @@ A modern React application for exploring GitHub repositories, built with TypeScr
 - `pnpm format` - Format code
 - `pnpm check:types` - Check TypeScript types
 - `pnpm check:cspell` - Check Spelling
+
+## 🐳 Docker Setup
+
+The application is containerized using Docker with a multi-stage build process and Nginx for serving the production build.
+
+### Docker Structure
+```
+docker/
+├── Dockerfile          # Multi-stage build configuration
+├── nginx.conf         # Nginx server configuration
+├── generate-env.sh    # Environment variable injection script
+└── .dockerignore      # Docker build context exclusions
+```
+
+### Building and Running with Docker
+
+1. **Build the Docker image**
+  # Get the Git SHA
+  ```bash
+  GIT_SHA=$(./docker/get-git-sha.sh)
+  ```
+  
+  # Build the image with Git SHA
+  ```bash
+  docker build -t github-repos \
+    --build-arg GIT_SHA=$GIT_SHA \
+    -f docker/Dockerfile .
+  ```
+
+2. **Run the container with environment variables**
+   ```bash
+   docker run -p 80:80 \
+     -e REACT_APP_API_URL=https://api.github.com \
+     -e REACT_APP_API_ACCESS_TOKEN=your_token \
+     github-repos
+   ```
+
+3. **Access the application**
+   Open your browser and navigate to `http://localhost`
+
+### Docker Features
+
+- **Multi-stage build**: 
+  - Uses Node.js 22 Alpine for building
+  - Uses Nginx Alpine for production
+  - Optimizes image size by separating build and runtime environments
+- **Environment Variables**: 
+  - Runtime environment variable injection through `generate-env.sh`
+  - Supports dynamic configuration without rebuilding
+  - Automatic Git SHA detection during build
+- **Nginx server**: 
+  - Efficiently serves static assets
+  - Includes security headers and CSP configuration
+  - Gzip compression enabled
+  - Optimized caching for static assets
+- **Security**: 
+  - Minimal base images (Alpine)
+  - Proper file permissions
+  - Environment variable handling
 
 ## 🏗️ Project Structure
 
@@ -90,3 +151,4 @@ The project includes several quality checks:
 - Formatting
 - Spell checking
 - Dependency checking
+- Docker build and test
