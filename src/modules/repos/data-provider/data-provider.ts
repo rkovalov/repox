@@ -2,8 +2,11 @@ import { queryOptions } from '@tanstack/react-query';
 import * as API from './api';
 import type { SearchOptions } from './types';
 
-export const fetchRepos = async (options: SearchOptions) => {
-  const response = await API.searchRepositories(options);
+export const fetchRepos = async (
+  options: SearchOptions,
+  params?: { signal?: AbortController['signal'] },
+) => {
+  const response = await API.searchRepositories(options, params);
   // place where we can modify the response
   // for example, we can normalize the response for our app
   // Alternatively, we can wrap the function to provide additional capabilities,
@@ -29,8 +32,8 @@ export const fetchRepos = async (options: SearchOptions) => {
 export const reposQueryOptions = (options: SearchOptions) =>
   queryOptions({
     queryKey: ['repos', options],
-    queryFn: ({ signal: _signal }) => {
-      // we can use the signal to cancel the request if needed
-      return fetchRepos(options);
+    queryFn: ({ signal }) => {
+      // Utilize the signal to handle request cancellation if necessary
+      return fetchRepos(options, { signal });
     },
   });
