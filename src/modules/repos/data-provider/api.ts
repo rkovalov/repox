@@ -69,7 +69,8 @@ const buildSearchQuery = (options: SearchOptions): string => {
 };
 
 export const searchRepositories = async (
-  options: SearchOptions = {},
+  options: SearchOptions,
+  params?: { signal?: AbortController['signal'] },
 ): Promise<RepositorySearchResponse> => {
   const {
     first = 50,
@@ -134,6 +135,7 @@ export const searchRepositories = async (
         'User-Agent': 'Advanced Repository Search',
         Accept: 'application/vnd.github.v4+json',
       },
+      signal: params?.signal,
     });
 
     return response;
