@@ -17,3 +17,6 @@ styled-system
 styled-system-studio
 
 .env
+
+# GraphQL
+.graphql/

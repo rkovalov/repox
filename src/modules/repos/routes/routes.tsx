@@ -1,7 +1,7 @@
 import { queryClient } from '@/router';
 import { type AnyRoute, Outlet, createRoute } from '@tanstack/react-router';
 import * as DP from '../data-provider';
-import { reposSearchParamsSchema } from './validators';
+import { reposSearchParamsSchema } from '../types';
 
 export const createRoutes = <Route extends AnyRoute>(rootRoute: Route) => {
   const indexRoute = createRoute({
@@ -23,7 +23,7 @@ export const createRoutes = <Route extends AnyRoute>(rootRoute: Route) => {
       return { search };
     },
     loader: ({ context }) => {
-      queryClient.ensureQueryData(DP.reposQueryOptions(context.search));
+      queryClient.ensureQueryData(DP.repositoriesQueryOptions(context.search));
     },
     // component: Repos,
   }).lazy(() => import('./repos.lazy').then((d) => d.Route));

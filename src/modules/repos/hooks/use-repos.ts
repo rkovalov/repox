@@ -4,5 +4,5 @@ import { useFilters } from '../hooks';
 
 export const useRepos = () => {
   const { filters } = useFilters();
-  return useQuery(DP.reposQueryOptions(filters));
+  return useQuery(DP.repositoriesQueryOptions(filters));
 };

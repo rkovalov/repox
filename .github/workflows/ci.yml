@@ -23,8 +23,8 @@ on:
         required: false
 
 env:
-  REACT_APP_API_URL: ${{ github.event.inputs.REACT_APP_API_URL || 'https://api.github.com' }}
-  REACT_APP_API_ACCESS_TOKEN: ${{ github.event.inputs.REACT_APP_API_ACCESS_TOKEN || '' }}
+  REACT_APP_API_URL: ${{ vars.REACT_APP_API_URL || 'https://api.github.com' }}
+  REACT_APP_API_ACCESS_TOKEN: ${{  vars.REACT_APP_API_ACCESS_TOKEN || '' }}
 
 jobs:
   test:
@@ -75,21 +75,29 @@ jobs:
         key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
         restore-keys: |
           ${{ runner.os }}-pnpm-store-
-          
+    
+    - name: Check Env Variables
+      run: |
+        echo "REACT_APP_API_URL: ${{ env.REACT_APP_API_URL }}"
+        echo "REACT_APP_API_ACCESS_TOKEN: ${{ env.REACT_APP_API_ACCESS_TOKEN }}"
+
     - name: Install dependencies
       run: pnpm install --frozen-lockfile
     
     - name: Dependecies check
-      run: pnpm pnpm check:dependencies
+      run: pnpm check:dependencies
 
     - name: Type check
-      run: pnpm check:types
-
+      run: |
+        # REACT_APP_API_URL=${{ env.REACT_APP_API_URL }}
+        # REACT_APP_API_ACCESS_TOKEN=${{ env.REACT_APP_API_ACCESS_TOKEN }}
+        pnpm check:types
+        
     - name: Spell check
-      run: pnpm check:cspell || true
+      run: pnpm check:cspell
       
     - name: Lint code
-      run: pnpm format:lint || true
+      run: pnpm format:lint
       
     - name: Run tests
       run: pnpm test
@@ -97,9 +105,7 @@ jobs:
     - name: Build project
       run: |
         # Pass git information and environment variables to the build process
-        GIT_SHA=${{ env.GIT_SHA }} \
-        REACT_APP_API_URL=${{ env.REACT_APP_API_URL }} \
-        REACT_APP_API_ACCESS_TOKEN=${{ env.REACT_APP_API_ACCESS_TOKEN }} \
+        GIT_SHA=${{ env.GIT_SHA }}
         pnpm build
       
     # - name: Cache build artifacts

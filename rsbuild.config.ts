@@ -46,7 +46,7 @@ export default defineConfig(
         },
       },
       tools: {
-        postcss: (config, { addPlugins }) => {
+        postcss: (_config, { addPlugins }) => {
           addPlugins([require('@pandacss/dev/postcss')]);
         },
       },

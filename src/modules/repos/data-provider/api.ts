@@ -1,77 +1,11 @@
-import { ENV_VARS } from '@/env';
-import { gql, request } from 'graphql-request';
-import type { SearchOptions } from './types';
-// Advanced repository search interfaces
-interface Repository {
-  name: string;
-  description: string | null;
-  url: string;
-  stargazerCount: number;
-  forkCount: number;
-  primaryLanguage: {
-    name: string;
-  } | null;
-  languages: {
-    nodes: Array<{ name: string }>;
-  };
-  repositoryTopics: {
-    nodes: Array<{ topic: { name: string } }>;
-  };
-}
+import { fetcher } from '@/services/fetcher';
+import { type ReposSearchParams, repositoriesApiSchema } from './../types';
+import * as queries from './graphql/queries';
 
-interface RepositorySearchResponse {
-  search: {
-    nodes: Repository[];
-    pageInfo: {
-      hasNextPage: boolean;
-      endCursor: string | null;
-    };
-    repositoryCount: number;
-  };
-}
-
-const buildSearchQuery = (options: SearchOptions): string => {
-  const queryParts: string[] = [];
-
-  // Language filters
-  if (options.languages && options.languages.length > 0) {
-    const languageQuery = options.languages
-      .map((lang) => `language:${lang}`)
-      .join(' ');
-    queryParts.push(languageQuery);
-  }
-
-  // Stars range
-  if (options.minStars) {
-    queryParts.push(`stars:>=${options.minStars}`);
-  }
-  if (options.maxStars) {
-    queryParts.push(`stars:<=${options.maxStars}`);
-  }
-
-  // Topics
-  if (options.topics && options.topics.length > 0) {
-    const topicQuery = options.topics
-      .map((topic) => `topic:${topic}`)
-      .join(' ');
-    queryParts.push(topicQuery);
-  }
-
-  // Name or description search
-  if (options.search) {
-    queryParts.push(`"${options.search}" in:name,description`);
-  }
-
-  // Always sort by stars
-  queryParts.push('sort:stars-desc');
-
-  return queryParts.join(' ');
-};
-
-export const searchRepositories = async (
-  options: SearchOptions,
+export const fetchRepositories = async (
+  options: ReposSearchParams,
   params?: { signal?: AbortController['signal'] },
-): Promise<RepositorySearchResponse> => {
+) => {
   const {
     first = 50,
     after,
@@ -79,69 +13,26 @@ export const searchRepositories = async (
     minStars = 1000,
   } = options;
 
-  const searchQuery = buildSearchQuery({
-    ...options,
-    languages,
-    minStars,
-  });
-
-  const query = gql`
-    query SearchRepositories($queryString: String!, $first: Int!, $after: String) {
-      search(query: $queryString, type: REPOSITORY, first: $first, after: $after) {
-        repositoryCount
-        nodes {
-          ... on Repository {
-            name
-            description
-            url
-            stargazerCount
-            forkCount
-            primaryLanguage {
-              name
-            }
-            languages(first: 5) {
-              nodes {
-                name
-              }
-            }
-            repositoryTopics(first: 5) {
-              nodes {
-                topic {
-                  name
-                }
-              }
-            }
-          }
-        }
-        pageInfo {
-          hasNextPage
-          endCursor
-        }
-      }
-    }
-  `;
-
   try {
-    const response = await request<RepositorySearchResponse>({
-      url: `${ENV_VARS.REACT_APP_API_URL}/graphql`,
-      document: query,
-      variables: {
-        queryString: searchQuery,
-        first,
-        after: after || null,
-      },
-      requestHeaders: {
-        Authorization: `Bearer ${ENV_VARS.REACT_APP_API_ACCESS_TOKEN}`,
-        'User-Agent': 'Advanced Repository Search',
-        Accept: 'application/vnd.github.v4+json',
-      },
-      signal: params?.signal,
-    });
-
-    return response;
+    return await fetcher
+      .post('graphql', {
+        json: {
+          query: queries.repositories.query,
+          variables: {
+            queryString: queries.repositories.buildSearchQuery({
+              ...options,
+              languages,
+              minStars,
+            }),
+            first,
+            after: after || null,
+          },
+        },
+        signal: params?.signal,
+      })
+      .json(repositoriesApiSchema);
   } catch (error) {
     if (error instanceof Error) {
-      let message: null | string = null;
       if ('response' in error) {
         // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         const graphQLError = error as { response: { errors?: any[] } };
@@ -149,8 +40,14 @@ export const searchRepositories = async (
           console.error('GraphQL Errors:', graphQLError.response.errors);
         }
       }
-
+      let message: null | string = null;
       switch (true) {
+        case error.name === 'AbortError':
+          message = 'Aborted';
+          break;
+        case error.name === 'ValiError':
+          message = `Response Validation Error. ${error.message}`;
+          break;
         case error.message.includes('401'):
           message = 'Authentication Failed: Invalid or expired token';
           break;
@@ -163,9 +60,8 @@ export const searchRepositories = async (
         default:
           message = 'An unexpected error occurred';
       }
-      Promise.reject(message);
+      throw new Error(`[fetch repos]: ${message}`);
     }
-
     throw error;
   }
 };

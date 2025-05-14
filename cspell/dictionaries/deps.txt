@@ -8,3 +8,5 @@ valibot
 revparse
 codegen
 pandacss
+graphqlsp
+ValiError
