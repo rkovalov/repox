@@ -16,7 +16,7 @@ export const fetchRepositories = createProvider(API.fetchRepositories)
 
 export const repositoriesQueryOptions = (options: ReposSearchParams) =>
   queryOptions({
-    queryKey: ['repos', options],
+    queryKey: ['repos', Object.keys(options).length ? options : { search: '' }],
     queryFn: ({ signal }) => {
       // Utilize the signal to handle request cancellation if necessary
       return fetchRepositories(options, { signal });

@@ -21,7 +21,7 @@ export const Repos = () => {
   const { data, isLoading, isError } = useRepos();
   return (
     <div className={flex({ direction: 'column', gap: 4 })}>
-      <Filters />
+      <Filters data-testid="filters" />
       <Table
         aria-label="GitHub repositories"
         className={css({
@@ -54,7 +54,10 @@ export const Repos = () => {
           {isLoading ? (
             <Row>
               <Cell colSpan={3}>
-                <LoaderCircle className={css({ animation: 'spin' })} />
+                <LoaderCircle
+                  data-testid="loader-icon"
+                  className={css({ animation: 'spin' })}
+                />
               </Cell>
             </Row>
           ) : isError ? (

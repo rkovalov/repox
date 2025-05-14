@@ -42,34 +42,6 @@ export const repositoriesApiSchema = v.object({
   }),
 });
 
-interface Repository {
-  name: string;
-  description: string | null;
-  url: string;
-  stargazerCount: number;
-  forkCount: number;
-  primaryLanguage: {
-    name: string;
-  } | null;
-  languages: {
-    nodes: Array<{ name: string }>;
-  };
-  repositoryTopics: {
-    nodes: Array<{ topic: { name: string } }>;
-  };
-}
-
-export interface RepositorySearchResponse {
-  search: {
-    nodes: Repository[];
-    pageInfo: {
-      hasNextPage: boolean;
-      endCursor: string | null;
-    };
-    repositoryCount: number;
-  };
-}
-
 export const reposSearchParamsSchema = v.object({
   search: v.optional(v.string()),
   languages: v.optional(v.array(v.string())),
@@ -80,4 +52,5 @@ export const reposSearchParamsSchema = v.object({
   after: v.optional(v.string()),
 });
 
+export type RepositoriesApi = v.InferOutput<typeof repositoriesApiSchema>;
 export type ReposSearchParams = v.InferOutput<typeof reposSearchParamsSchema>;
