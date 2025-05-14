@@ -46,9 +46,9 @@ export const Repos = () => {
             borderColor: 'gray.200',
           })}
         >
-          <Column>Repository</Column>
-          <Column>Stars</Column>
-          <Column>Forks</Column>
+          <Column isRowHeader>Repository</Column>
+          <Column isRowHeader>Stars</Column>
+          <Column isRowHeader>Forks</Column>
         </TableHeader>
         <TableBody>
           {isLoading ? (
