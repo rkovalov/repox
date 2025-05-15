@@ -38,7 +38,7 @@ jobs:
     - name: Set Git commit info as environment variables
       run: |
         echo "GIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-        echo "GIT_COMMIT_MESSAGE=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
+        echo "GIT_COMMIT_MESSAGE=$(git log -1 --pretty=%s)" >> $GITHUB_ENV
         echo "GIT_COMMIT_AUTHOR=$(git log -1 --pretty=%an)" >> $GITHUB_ENV
         echo "GIT_COMMIT_DATE=$(git log -1 --pretty=%ad --date=iso)" >> $GITHUB_ENV
         echo "GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)" >> $GITHUB_ENV
