@@ -4,8 +4,6 @@ import { Folders, UserRound } from 'lucide-react';
 import { css } from '@/../styled-system/css';
 import { flex } from '@/../styled-system/patterns';
 
-import { Link as LinkAria } from 'react-aria-components';
-
 import { AsideBar } from '../aside-bar';
 
 export interface LayoutProps {
@@ -14,6 +12,9 @@ export interface LayoutProps {
 
 const navItem = css({
   padding: '2',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '2',
   _hover: {
     backgroundColor: 'slate.700',
   },
@@ -27,20 +28,16 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
     <div className={flex({ direction: 'row', height: 'screen' })}>
       <AsideBar>
         <Link to="/repos" className={navItem}>
-          <LinkAria className={flex({ alignItems: 'center', gap: 2 })}>
-            <Folders size={16} />
-            Repositories
-          </LinkAria>
+          <Folders size={16} />
+          Repositories
         </Link>
         <Link
           //@ts-ignore
           to="/under-construction"
           className={navItem}
         >
-          <LinkAria className={flex({ alignItems: 'center', gap: 2 })}>
-            <UserRound size={16} />
-            Profile
-          </LinkAria>
+          <UserRound size={16} />
+          Profile
         </Link>
       </AsideBar>
       <main
