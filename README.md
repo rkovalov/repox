@@ -1,4 +1,4 @@
-[![CI/CD](https://github.com/rkovalov/repos/actions/workflows/ci.yml/badge.svg)](https://github.com/rkovalov/repos/actions/workflows/ci.yml)
+[![CI/CD](https://github.com/rkovalov/repox/actions/workflows/ci.yml/badge.svg)](https://github.com/rkovalov/repox/actions/workflows/ci.yml)
 
 # GitHub Repos Explorer
 
