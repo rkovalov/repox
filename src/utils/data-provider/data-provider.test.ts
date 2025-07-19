@@ -113,7 +113,7 @@ describe('createProvider type tests', () => {
     const provider = createProvider(mockFn);
 
     type Result = typeof provider extends (...args: [number]) => Promise<{ data: number }> ? true : false;
-    // biome-ignore lint/correctness/noUnusedVariables: <explanation>
+    // biome-ignore lint/correctness/noUnusedVariables: suppress unused type
     type TestCase = Expect<Equal<Result, true>>;
   });
 
@@ -124,25 +124,25 @@ describe('createProvider type tests', () => {
     // Test useThen types
     const withThen = provider.useThen((result) => result.data);
     type ThenResult = typeof withThen extends (...args: [number]) => Promise<number> ? true : false;
-    // biome-ignore lint/correctness/noUnusedVariables: <explanation>
+    // biome-ignore lint/correctness/noUnusedVariables:  suppress unused type
     type TestThen = Expect<Equal<ThenResult, true>>;
 
     // Test useCatch types
     const withCatch = provider.useCatch((_error: Error) => ({ data: 0 }));
     type CatchResult = typeof withCatch extends (...args: [number]) => Promise<{ data: number }> ? true : false;
-    // biome-ignore lint/correctness/noUnusedVariables: <explanation>
+    // biome-ignore lint/correctness/noUnusedVariables:  suppress unused type
     type TestCatch = Expect<Equal<CatchResult, true>>;
 
     // Test useFinally types
     const withFinally = provider.useFinally(() => console.log('done'));
     type FinallyResult = typeof withFinally extends (...args: [number]) => Promise<{ data: number }> ? true : false;
-    // biome-ignore lint/correctness/noUnusedVariables: <explanation>
+    // biome-ignore lint/correctness/noUnusedVariables:  suppress unused type
     type TestFinally = Expect<Equal<FinallyResult, true>>;
 
     // Test useMock types
     const withMock = provider.useMock(async (id: number) => ({ data: id * 2 }));
     type MockResult = typeof withMock extends (...args: [number]) => Promise<{ data: number }> ? true : false;
-    // biome-ignore lint/correctness/noUnusedVariables: <explanation>
+    // biome-ignore lint/correctness/noUnusedVariables:  suppress unused type
     type TestMock = Expect<Equal<MockResult, true>>;
   });
 
@@ -156,7 +156,7 @@ describe('createProvider type tests', () => {
       .useFinally(() => console.log('done'));
 
     type ChainedResult = typeof chainedProvider extends (...args: [number]) => Promise<number> ? true : false;
-    // biome-ignore lint/correctness/noUnusedVariables: <explanation>
+    // biome-ignore lint/correctness/noUnusedVariables:  suppress unused type
     type TestChained = Expect<Equal<ChainedResult, true>>;
   });
 
@@ -167,7 +167,7 @@ describe('createProvider type tests', () => {
     type ArgsResult = typeof provider extends (...args: [number, string]) => Promise<{ id: number; name: string }>
       ? true
       : false;
-    // biome-ignore lint/correctness/noUnusedVariables: <explanation>
+    // biome-ignore lint/correctness/noUnusedVariables:  suppress unused type
     type TestArgs = Expect<Equal<ArgsResult, true>>;
   });
 });
