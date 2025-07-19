@@ -1,12 +1,15 @@
 {
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true,
-  "editor.defaultFormatter": "biomejs.biome",
-  "editor.formatOnSave": true,
+  "css.lint.validProperties": ["composes"],
   "editor.codeActionsOnSave": {
     "quickfix.biome": "explicit",
+    "source.action.useSortedKeys.biome": "explicit",
+    "source.action.useSortedProperties.biome": "explicit",
+    "source.fixAll.biome": "explicit",
     "source.organizeImports.biome": "explicit"
   },
-  "css.lint.validProperties": ["composes"],
-  "svg.preview.background": "editor"
+  "editor.defaultFormatter": "biomejs.biome",
+  "editor.formatOnSave": true,
+  "svg.preview.background": "editor",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
