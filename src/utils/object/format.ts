@@ -1,6 +1,4 @@
-export const formatPublicVars = (
-  publicVars: Record<string, string | boolean>,
-): Record<string, boolean | string> => {
+export const formatPublicVars = (publicVars: Record<string, string | boolean>): Record<string, boolean | string> => {
   const result: Record<string, boolean | string> = {};
   for (const [key, value] of Object.entries(publicVars)) {
     let val = value;

@@ -1,41 +1,36 @@
 {
   "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
-  "version": "0.2",
-  "language": "en",
-  "files": ["**/*.{ts,tsx,js,jsx,md,mdx,yml,json}"],
-  "useGitignore": true,
+  "dictionaries": ["forbidden", "default", "custom", "yaml", "test", "deps"],
+  "dictionaryDefinitions": [
+    {
+      "addWords": true,
+      "name": "forbidden",
+      "path": "./dictionaries/forbidden.txt"
+    },
+    {
+      "addWords": true,
+      "name": "custom",
+      "path": "./dictionaries/custom.txt"
+    },
+    {
+      "addWords": true,
+      "name": "test",
+      "path": "./dictionaries/test.txt"
+    },
+    {
+      "addWords": true,
+      "name": "deps",
+      "path": "./dictionaries/deps.txt"
+    }
+  ],
   "enableFiletypes": ["mdx"],
+  "files": ["**/*.{ts,tsx,js,jsx,md,mdx,yml,json}"],
+  "ignorePaths": ["../dist", "../coverage", "../node_modules", "../pnpm-lock.yaml"],
   "ignoreRegExpList": [
     // ignore markdown anchors such as [modifyRsbuildConfig](#modifyrsbuildconfig)
     "#.*?\\)"
   ],
-  "ignorePaths": [
-    "../dist",
-    "../coverage",
-    "../node_modules",
-    "../pnpm-lock.yaml"
-  ],
-  "dictionaries": ["forbidden", "default", "custom", "yaml", "test", "deps"],
-  "dictionaryDefinitions": [
-    {
-      "name": "forbidden",
-      "path": "./dictionaries/forbidden.txt",
-      "addWords": true
-    },
-    {
-      "name": "custom",
-      "path": "./dictionaries/custom.txt",
-      "addWords": true
-    },
-    {
-      "name": "test",
-      "path": "./dictionaries/test.txt",
-      "addWords": true
-    },
-    {
-      "name": "deps",
-      "path": "./dictionaries/deps.txt",
-      "addWords": true
-    }
-  ]
+  "language": "en",
+  "useGitignore": true,
+  "version": "0.2"
 }

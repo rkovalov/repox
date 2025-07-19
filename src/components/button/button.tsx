@@ -1,20 +1,11 @@
-import { css } from '@/../styled-system/css';
 import { type ButtonProps, Button as RACButton } from 'react-aria-components';
 
+import { css } from '@/../styled-system/css';
+
 const buttonStyles = css({
-  display: 'inline-flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  padding: '0.5rem 1rem',
-  fontSize: '0.875rem',
-  fontWeight: 500,
-  borderRadius: '0.375rem',
-  transition: 'all 0.2s',
-  cursor: 'pointer',
-  backgroundColor: 'slate.700',
-  color: 'white',
-  _hover: {
-    backgroundColor: 'slate.600',
+  _disabled: {
+    cursor: 'not-allowed',
+    opacity: 0.5,
   },
   _focus: {
     outline: 'none',
@@ -22,10 +13,20 @@ const buttonStyles = css({
     ringColor: 'slate.500',
     ringOffset: '2px',
   },
-  _disabled: {
-    opacity: 0.5,
-    cursor: 'not-allowed',
+  _hover: {
+    backgroundColor: 'slate.600',
   },
+  alignItems: 'center',
+  backgroundColor: 'slate.700',
+  borderRadius: '0.375rem',
+  color: 'white',
+  cursor: 'pointer',
+  display: 'inline-flex',
+  fontSize: '0.875rem',
+  fontWeight: 500,
+  justifyContent: 'center',
+  padding: '0.5rem 1rem',
+  transition: 'all 0.2s',
 });
 
 export function Button(props: ButtonProps) {

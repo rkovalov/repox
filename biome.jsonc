@@ -94,11 +94,11 @@
           "level": "error",
           "options": {
             "conventions": [
-              // {
-              //   "match": "_?(.+)",
-              //   "selector": { "kind": "objectLiteralProperty" }
-              //   // We don't need to specify `formats` because the capture is forwarded to the next conventions.
-              // },
+              {
+                "match": "_?(.+)",
+                "selector": { "kind": "objectLiteralProperty" }
+                // We don't need to specify `formats` because the capture is forwarded to the next conventions.
+              },
               {
                 "formats": ["camelCase", "PascalCase", "snake_case"],
                 "selector": {

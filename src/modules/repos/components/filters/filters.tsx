@@ -1,14 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
+import { Input } from '@/components';
 
 import { css } from '@/../styled-system/css';
-import { Input } from '@/components';
 
 import { useFilters } from '../../hooks';
 
-export const Filters: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
-  className,
-  ...otherProps
-}) => {
+export const Filters: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ className, ...otherProps }) => {
   const { filters, onFilterChange } = useFilters();
   const [localFilters, setLocalFilters] = useState(filters);
   const lastSubmittedFilters = useRef(filters);
@@ -23,9 +20,7 @@ export const Filters: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   };
 
   useEffect(() => {
-    if (
-      JSON.stringify(filters) !== JSON.stringify(lastSubmittedFilters.current)
-    ) {
+    if (JSON.stringify(filters) !== JSON.stringify(lastSubmittedFilters.current)) {
       setLocalFilters(filters);
       lastSubmittedFilters.current = filters;
     }
@@ -36,9 +31,7 @@ export const Filters: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
       <Input
         placeholder="Search..."
         value={localFilters.search ?? ''}
-        onChange={(event) =>
-          handleLocalFiltersChange({ search: event.target.value })
-        }
+        onChange={(event) => handleLocalFiltersChange({ search: event.target.value })}
       />
     </div>
   );

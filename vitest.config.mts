@@ -1,6 +1,8 @@
 import path from 'node:path';
-import react from '@vitejs/plugin-react';
+
 import { defineConfig } from 'vitest/config';
+import react from '@vitejs/plugin-react';
+
 import { loadPublicEnvVars } from './rsbuild/utils';
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
@@ -27,13 +29,13 @@ export default defineConfig(async () => {
       },
     },
     test: {
-      environment: 'jsdom',
-      include: ['./src/**/*.test{s,}.ts{x,}'],
-      setupFiles: './tests/setup.ts',
-      globals: true,
       // ISSUE: vitest automatically convert non-string value to string
       // it works correctly via rsbuild
       env: formatEnvVars(envVars),
+      environment: 'jsdom',
+      globals: true,
+      include: ['./src/**/*.test{s,}.ts{x,}'],
+      setupFiles: './tests/setup.ts',
     },
   };
 });
