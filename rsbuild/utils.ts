@@ -1,5 +1,6 @@
-import { loadEnv } from '@rsbuild/core';
 import { simpleGit } from 'simple-git';
+import { loadEnv } from '@rsbuild/core';
+
 import packageJson from '../package.json';
 // Ideally, the utils package should be published to private registry to avoid importing directly from the src directory.
 import { formatPublicVars } from '../src/utils/object/format';
@@ -10,13 +11,13 @@ export const loadPublicEnvVars = async () => {
   // The process.env.GIT_SHA environment variable might be set during the Docker image build process.
   // This is useful to avoid copying the entire .git folder into the Docker image, reducing its size.
   const gitSHA = process.env.GIT_SHA ?? (await getGitSha());
-  const VERSION = `v${packageJson.version}-${gitSHA}`;
+  const version = `v${packageJson.version}-${gitSHA}`;
   return {
     ...formatPublicVars(publicVars),
-    'process.env.VERSION': JSON.stringify(VERSION),
-    'import.meta.env.VERSION': JSON.stringify(VERSION),
-    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
     'import.meta.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+    'import.meta.env.VERSION': JSON.stringify(version),
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+    'process.env.VERSION': JSON.stringify(version),
   };
 };
 

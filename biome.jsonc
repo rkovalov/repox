@@ -1,0 +1,154 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": {
+          "level": "on",
+          "options": {
+            "groups": [
+              ":NODE:",
+              ":BLANK_LINE:",
+              ":URL:",
+              ":BLANK_LINE:",
+              "react*",
+              ["*", "*/**", "!:PATH:", "!:ALIAS:", "!@*/*"],
+              ["@*/*"],
+              ":PACKAGE_WITH_PROTOCOL:",
+              ":BLANK_LINE:",
+              ":ALIAS:",
+              ":BLANK_LINE:",
+              [":PATH:", "!**/*.css"],
+              ":BLANK_LINE:",
+              "**/*.css",
+              ":BLANK_LINE:"
+            ]
+          }
+        },
+        "useSortedKeys": "on",
+        "useSortedProperties": "on"
+      }
+    }
+  },
+  "css": {
+    "formatter": {
+      "quoteStyle": "single"
+    }
+  },
+  "formatter": {
+    "enabled": true,
+    "formatWithErrors": false,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineEnding": "lf",
+    "lineWidth": 120
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single"
+    }
+  },
+  "json": {
+    "formatter": {
+      "enabled": true
+    },
+    "parser": {
+      "allowComments": true,
+      "allowTrailingCommas": false
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "a11y": {
+        "noLabelWithoutControl": "off",
+        "noSvgWithoutTitle": "off",
+        "useKeyWithClickEvents": "off"
+      },
+      "complexity": {
+        "noForEach": "off"
+      },
+      "correctness": {
+        "noUnusedImports": {
+          "fix": "none",
+          "level": "error"
+        },
+        "noUnusedVariables": "error"
+      },
+      "recommended": true,
+      "style": {
+        "noEnum": "error",
+        "noParameterAssign": "error",
+        "noUselessElse": "error",
+        "useBlockStatements": "error",
+        "useFilenamingConvention": {
+          "level": "error",
+          "options": {
+            "filenameCases": ["kebab-case"],
+            "match": "%?(.+?)[.](.+)",
+            "requireAscii": true,
+            "strictCase": false
+          }
+        },
+        "useNamingConvention": {
+          "level": "error",
+          "options": {
+            "conventions": [
+              {
+                "match": "_?(.+)",
+                "selector": { "kind": "objectLiteralProperty" }
+                // We don't need to specify `formats` because the capture is forwarded to the next conventions.
+              },
+              {
+                "formats": ["camelCase", "PascalCase", "snake_case"],
+                "selector": {
+                  "kind": "objectLiteralProperty"
+                }
+              },
+              // {
+              //   "match": "_?(.+)",
+              //   "selector": { "kind": "typeProperty" }
+              //   // We don't need to specify `formats` because the capture is forwarded to the next conventions.
+              // },
+              {
+                "formats": ["camelCase", "PascalCase", "snake_case"],
+                "selector": {
+                  "kind": "typeProperty"
+                }
+              }
+            ],
+            "requireAscii": true,
+            "strictCase": false
+          }
+        },
+        "useSingleVarDeclarator": "error"
+      },
+      "suspicious": {
+        "noExplicitAny": "info",
+        "noVar": "error"
+      }
+    }
+  },
+  "overrides": [
+    {
+      "includes": ["**/*.ts", "!**/*.stories.ts", "!**/*.d.ts", "!turbo/**", "!*.config.ts"],
+      "linter": { "rules": { "style": { "noDefaultExport": "error" } } }
+    },
+    {
+      "assist": {
+        "actions": {
+          "source": {
+            "useSortedKeys": "off"
+          }
+        }
+      },
+      "includes": ["package.json", "**/*tsconfig*", "biome.json*"]
+    }
+  ],
+  "vcs": {
+    "clientKind": "git",
+    "defaultBranch": "master",
+    "enabled": true,
+    "useIgnoreFile": true
+  }
+}

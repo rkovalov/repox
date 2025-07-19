@@ -1,10 +1,12 @@
-import { createProvider } from '@/utils/data-provider';
+/** biome-ignore-all lint/correctness/useHookAtTopLevel: suppress hook rule, biome matches word 'use' */
 import { queryOptions } from '@tanstack/react-query';
 
-import type { ReposSearchParams } from '../types';
-import * as API from './api';
+import { createProvider } from '@/utils/data-provider';
 
-export const fetchRepositories = createProvider(API.fetchRepositories)
+import type { ReposSearchParams } from '../types';
+import * as Api from './api';
+
+export const fetchRepositories = createProvider(Api.fetchRepositories)
   .useThen((response) => {
     // place where we can modify the response
     // for example, we can normalize the response for our app
@@ -16,9 +18,9 @@ export const fetchRepositories = createProvider(API.fetchRepositories)
 
 export const repositoriesQueryOptions = (options: ReposSearchParams) =>
   queryOptions({
-    queryKey: ['repos', Object.keys(options).length ? options : { search: '' }],
     queryFn: ({ signal }) => {
       // Utilize the signal to handle request cancellation if necessary
       return fetchRepositories(options, { signal });
     },
+    queryKey: ['repos', Object.keys(options).length ? options : { search: '' }],
   });

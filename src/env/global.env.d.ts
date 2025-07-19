@@ -20,6 +20,7 @@ declare global {
   }
 
   interface Window {
+    // biome-ignore lint/style/useNamingConvention: suppress key format
     __env__: Partial<ImportMetaEnv>;
   }
 }

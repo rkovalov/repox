@@ -2,8 +2,11 @@ import { type EnvVars, validate } from './validators';
 
 describe('validate', () => {
   const validEnvVars: EnvVars = {
+    // biome-ignore lint/style/useNamingConvention: suppress capitalized key
     REACT_APP_API_ACCESS_TOKEN: '1234567890',
+    // biome-ignore lint/style/useNamingConvention: suppress capitalized key
     REACT_APP_API_URL: '/api',
+    // biome-ignore lint/style/useNamingConvention: suppress capitalized key
     VERSION: 'v1.1.1',
   };
 
@@ -16,6 +19,7 @@ describe('validate', () => {
     expect(() =>
       // @ts-ignore
       // Ignoring type check here because VERSION is expected to be a string, but we are testing invalid input
+      // biome-ignore lint/style/useNamingConvention: suppress capitalized key
       validate({ ...validEnvVars, VERSION: undefined }),
     ).toThrowError();
   });

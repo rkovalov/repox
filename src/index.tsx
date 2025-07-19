@@ -1,7 +1,7 @@
-import { ENV_VARS } from '@/env';
-
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { ENV_VARS } from '@/env';
+
 import App from './app';
 import './index.css';
 

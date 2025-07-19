@@ -1,6 +1,6 @@
-import { debounce } from '@/utils';
-import { useNavigate, useSearch } from '@tanstack/react-router';
 import { useRef } from 'react';
+import { useNavigate, useSearch } from '@tanstack/react-router';
+import { debounce } from '@/utils';
 
 interface Filters {
   search?: string;

@@ -1,5 +1,7 @@
-import * as testsUtils from '@/utils/tests';
 import { screen } from '@testing-library/react';
+
+import * as testsUtils from '@/utils/tests';
+
 import { fetchRepositories, mock } from '../../data-provider';
 import { Repos } from './repos';
 
@@ -41,13 +43,9 @@ describe('Repos', () => {
   });
 
   it('should render error state', async () => {
-    fetchRepositories.useMock(() =>
-      Promise.reject('Error loading repositories'),
-    );
+    fetchRepositories.useMock(() => Promise.reject('Error loading repositories'));
     testsUtils.renderWithQueryClient(<Repos />);
-    const errorText = await screen.findByText(
-      /Sorry, we couldn't load the repositories/i,
-    );
+    const errorText = await screen.findByText(/Sorry, we couldn't load the repositories/i);
     expect(errorText).toBeInTheDocument();
   });
 

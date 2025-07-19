@@ -11,11 +11,11 @@ export function AsideBar({ children, className }: AsideBarProps) {
     <aside
       className={cx(
         css({
-          width: '280px',
-          height: '100vh',
-          borderRight: '1px solid',
           borderColor: 'gray.200',
+          borderRight: '1px solid',
+          height: '100vh',
           padding: '4',
+          width: '280px',
         }),
         className,
       )}

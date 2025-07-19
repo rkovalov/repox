@@ -1,5 +1,5 @@
-import { Link } from '@tanstack/react-router';
 import { Folders, UserRound } from 'lucide-react';
+import { Link } from '@tanstack/react-router';
 
 import { css } from '@/../styled-system/css';
 import { flex } from '@/../styled-system/patterns';
@@ -11,16 +11,16 @@ export interface LayoutProps {
 }
 
 const navItem = css({
-  padding: '2',
-  display: 'flex',
-  alignItems: 'center',
-  gap: '2',
   _hover: {
     backgroundColor: 'slate.700',
   },
-  borderRadius: 'md',
-  transition: 'all 0.2s',
   '&:a': {},
+  alignItems: 'center',
+  borderRadius: 'md',
+  display: 'flex',
+  gap: '2',
+  padding: '2',
+  transition: 'all 0.2s',
 });
 
 export const Layout: React.FC<LayoutProps> = ({ children }) => {

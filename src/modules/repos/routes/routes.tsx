@@ -1,32 +1,35 @@
+import { type AnyRoute, createRoute, Outlet } from '@tanstack/react-router';
 import { queryClient } from '@/router';
-import { type AnyRoute, Outlet, createRoute } from '@tanstack/react-router';
-import * as DP from '../data-provider';
+
+import * as Dp from '../data-provider';
 import { reposSearchParamsSchema } from '../types';
 
 export const createRoutes = <Route extends AnyRoute>(rootRoute: Route) => {
-  const indexRoute = createRoute({
-    path: 'repos',
-    getParentRoute: () => rootRoute,
+  const reposRoute = createRoute({
     component: () => {
       return (
         // here could be a layout component
         <Outlet />
       );
     },
+    getParentRoute: () => rootRoute,
+    path: 'repos',
   });
 
-  const reposRoute = createRoute({
-    path: '/',
-    getParentRoute: () => indexRoute,
-    validateSearch: reposSearchParamsSchema,
+  const indexRoute = createRoute({
     beforeLoad: ({ search }) => {
       return { search };
     },
+    getParentRoute: () => reposRoute,
     loader: ({ context }) => {
-      queryClient.ensureQueryData(DP.repositoriesQueryOptions(context.search));
+      queryClient.ensureQueryData(Dp.repositoriesQueryOptions(context.search));
     },
+    path: '/',
+    validateSearch: reposSearchParamsSchema,
     // component: Repos,
+    // @ts-ignore: issue with matching types with trailing slash,
+    // TODO: check later with newest version of tanstack router
   }).lazy(() => import('./repos.lazy').then((d) => d.Route));
 
-  return indexRoute.addChildren([reposRoute]);
+  return reposRoute.addChildren([indexRoute]);
 };

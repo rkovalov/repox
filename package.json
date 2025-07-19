@@ -11,14 +11,12 @@
     "check:types": "tsc --noEmit",
     "clean": "rm -rf node_modules dist",
     "dev": "pnpm prepare:graphql --watch & pnpm prepare:pandacss --watch &  rsbuild dev --open",
-    "format": "biome format .",
-    "format:fix": "pnpm format --write",
-    "format:lint": "biome check .",
+    "format": "biome format --diagnostic-level=error .",
+    "format:lint": "biome check --diagnostic-level=error .",
     "format:lint:fix": "pnpm format:lint --write",
     "preinstall": "npx only-allow pnpm",
     "postinstall": "simple-git-hooks",
-    "lint": "biome lint .",
-    "lint:fix": "pnpm lint --write",
+    "lint": "biome lint --diagnostic-level=error .",
     "prepare": "pnpm prepare:pandacss && pnpm prepare:graphql",
     "prepare:graphql": "graphql-codegen --config codegen.ts",
     "prepare:pandacss": "panda codegen",
@@ -31,67 +29,62 @@
     "types:coverage": "type-coverage --detail"
   },
   "simple-git-hooks": {
-    "pre-commit": "pnpm nano-staged",
+    "pre-commit": "pnpm lint-staged",
     "commit-msg": "pnpm commitlint --edit"
   },
-  "nano-staged": {
-    "*/**/package.json": [
-      "sort-package-json",
-      "biome check --write --no-errors-on-unmatched"
-    ],
+  "lint-staged": {
     "package.json": [
       "sort-package-json",
-      "biome check --write --no-errors-on-unmatched",
-      "pnpm check:dependencies"
+      "biome check --diagnostic-level=error --no-errors-on-unmatched --write"
     ],
-    "pnpm-lock.yaml": "pnpm dedupe --check",
+    "pnpm-lock.yaml": "pnpm dedupe --ignore-scripts --check",
     "*.{js,ts,mts,tsx,css,md,json}": [
-      "biome check --write --no-errors-on-unmatched",
+      "biome check --diagnostic-level=error --no-errors-on-unmatched --write",
       "pnpm check:cspell --no-progress --show-suggestions --no-must-find-files --show-context"
     ]
   },
   "dependencies": {
-    "@tanstack/react-query": "^5.75.7",
-    "@tanstack/react-router": "^1.120.3",
-    "ky": "^1.8.1",
+    "@tanstack/react-query": "^5.83.0",
+    "@tanstack/react-router": "^1.128.4",
+    "ky": "^1.8.2",
     "lucide-react": "0.509.0",
     "react": "^19.1.0",
-    "react-aria-components": "^1.8.0",
+    "react-aria-components": "^1.10.1",
     "react-dom": "^19.1.0",
     "valibot": "^1.1.0"
   },
   "devDependencies": {
-    "@0no-co/graphqlsp": "^1.12.16",
-    "@biomejs/biome": "^1.9.4",
+    "@0no-co/graphqlsp": "^1.14.0",
+    "@biomejs/biome": "^2.1.2",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
-    "@graphql-codegen/cli": "^5.0.6",
+    "@graphql-codegen/cli": "^5.0.7",
     "@graphql-codegen/schema-ast": "^4.1.0",
     "@graphql-typed-document-node/core": "^3.2.0",
-    "@pandacss/dev": "^0.53.6",
+    "@pandacss/dev": "^0.54.0",
     "@parcel/watcher": "^2.5.1",
-    "@rsbuild/core": "^1.3.18",
-    "@rsbuild/plugin-react": "^1.3.1",
-    "@tanstack/react-query-devtools": "^5.75.7",
-    "@tanstack/react-router-devtools": "^1.120.3",
+    "@rsbuild/core": "^1.4.8",
+    "@rsbuild/plugin-react": "^1.3.4",
+    "@tanstack/react-query-devtools": "^5.83.0",
+    "@tanstack/react-router-devtools": "^1.128.4",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
-    "@types/node": "^22.15.17",
-    "@types/react": "^19.1.2",
+    "@types/node": "^22.16.4",
+    "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.3",
-    "@vitejs/plugin-react": "^4.4.1",
-    "@vitejs/plugin-react-swc": "^3.9.0",
-    "@vitest/ui": "^3.1.3",
-    "cspell": "^9.0.1",
+    "@vitejs/plugin-react": "^4.7.0",
+    "@vitejs/plugin-react-swc": "^3.11.0",
+    "@vitest/ui": "^3.2.4",
+    "cspell": "^9.2.0",
     "jsdom": "^26.1.0",
-    "nano-staged": "^0.8.0",
-    "simple-git": "^3.27.0",
+    "lint-staged": "^16.1.2",
+    "simple-git": "^3.28.0",
     "simple-git-hooks": "^2.13.0",
-    "sort-package-json": "^3.2.1",
+    "sort-package-json": "^3.4.0",
     "typescript": "^5.8.3",
-    "vitest": "^3.1.3"
+    "vitest": "^3.2.4"
   },
-  "packageManager": "pnpm@10.1.0",
+  "packageManager": "pnpm@10.13.1",
   "engines": {
     "node": ">=22",
     "pnpm": ">=10"
