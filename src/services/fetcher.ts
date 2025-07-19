@@ -11,7 +11,6 @@ function replaceJson(fn: Operation<unknown>) {
     return {
       ...response,
 
-      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       json: async <Schema extends BaseSchema<any, any, any>>(schema?: Schema): Promise<InferOutput<Schema> | null> => {
         const result = await response.json();
         return schema ? parse(schema, result) : result;

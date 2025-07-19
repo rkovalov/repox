@@ -5,7 +5,6 @@ export const formatPublicVars = (publicVars: Record<string, string | boolean>): 
     try {
       // @ts-ignore
       val = JSON.parse(value);
-      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } catch (_e: any) {}
     if (val === 'true' || val === true) {
       result[key] = true;

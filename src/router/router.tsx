@@ -18,7 +18,6 @@ declare module '@tanstack/react-router' {
 export const rootRoute = createRootRouteWithContext<{
   // auth will initially be undefined
   // We'll be passing down the auth state from within a React component in the future
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   auth?: Record<string, any>;
   queryClient: QueryClient;
 }>()({

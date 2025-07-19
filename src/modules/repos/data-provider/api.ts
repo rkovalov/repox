@@ -30,7 +30,6 @@ export const fetchRepositories = async (
   } catch (error) {
     if (error instanceof Error) {
       if ('response' in error) {
-        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         const graphQLError = error as { response: { errors?: any[] } };
         if (graphQLError.response.errors) {
           console.error('GraphQL Errors:', graphQLError.response.errors);

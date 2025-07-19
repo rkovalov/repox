@@ -5,7 +5,7 @@ import * as Dp from '../data-provider';
 import { reposSearchParamsSchema } from '../types';
 
 export const createRoutes = <Route extends AnyRoute>(rootRoute: Route) => {
-  const indexRoute = createRoute({
+  const reposRoute = createRoute({
     component: () => {
       return (
         // here could be a layout component
@@ -16,18 +16,20 @@ export const createRoutes = <Route extends AnyRoute>(rootRoute: Route) => {
     path: 'repos',
   });
 
-  const reposRoute = createRoute({
+  const indexRoute = createRoute({
     beforeLoad: ({ search }) => {
       return { search };
     },
-    getParentRoute: () => indexRoute,
+    getParentRoute: () => reposRoute,
     loader: ({ context }) => {
       queryClient.ensureQueryData(Dp.repositoriesQueryOptions(context.search));
     },
     path: '/',
     validateSearch: reposSearchParamsSchema,
     // component: Repos,
+    // @ts-ignore: issue with matching types with trailing slash,
+    // TODO: check later with newest version of tanstack router
   }).lazy(() => import('./repos.lazy').then((d) => d.Route));
 
-  return indexRoute.addChildren([reposRoute]);
+  return reposRoute.addChildren([indexRoute]);
 };

@@ -5,7 +5,6 @@ import react from '@vitejs/plugin-react';
 
 import { loadPublicEnvVars } from './rsbuild/utils';
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 function formatEnvVars(input: Record<string, any>): Record<string, any> {
   return Object.keys(input).reduce(
     (acc, key) => {
@@ -14,7 +13,6 @@ function formatEnvVars(input: Record<string, any>): Record<string, any> {
       acc[lastPart] = JSON.parse(input[key]); // Assign the value to the last part
       return acc;
     },
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     {} as Record<string, any>,
   );
 }
